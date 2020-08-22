@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,14 +20,17 @@ public class Pedido extends Identificador{
     private Cliente cliente;
 
     @ManyToMany
-    @JoinTable(name = "item_pedido",
-            joinColumns =
-                    {@JoinColumn(name = "ped_id")},
-            inverseJoinColumns = {@JoinColumn(name = "ite_id")})
-    private List<Item> items = new ArrayList<>();
+//    @JoinTable(name = "item_pedido",
+//            joinColumns =
+//                    {@JoinColumn(name = "ped_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "ite_id")})
+    private List<ItemPedido> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
     private List<Pagamento> pagamentos = new ArrayList<>();
+
+    @Column(name = "data_do_pedido")
+    private Date dataDaCompra;
 
     @Override
     public String toString() {

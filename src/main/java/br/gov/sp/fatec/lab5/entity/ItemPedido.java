@@ -21,7 +21,7 @@ public class ItemPedido {
     }
 
     @Embeddable
-    private static class ItemPedidoPK implements Serializable {
+    public static class ItemPedidoPK implements Serializable {
 
         @ManyToOne
         @JoinColumn(name = "ite_id")

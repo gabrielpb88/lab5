@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.lab5.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,19 +12,20 @@ import java.util.List;
 @Entity
 @Table(name = "ped_pedido")
 @Getter
-@Setter
+@Setter @NoArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "ped_id"))
 public class Pedido extends Identificador{
+
+    public Pedido(Cliente cliente, Date dataDaCompra){
+        setCliente(cliente);
+        setDataDaCompra(dataDaCompra);
+    }
 
     @ManyToOne
     @JoinColumn(name = "cli_id")
     private Cliente cliente;
 
-    @ManyToMany
-//    @JoinTable(name = "item_pedido",
-//            joinColumns =
-//                    {@JoinColumn(name = "ped_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "ite_id")})
+    @OneToMany
     private List<ItemPedido> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
@@ -32,12 +34,18 @@ public class Pedido extends Identificador{
     @Column(name = "data_do_pedido")
     private Date dataDaCompra;
 
+    public void addItemPedido(ItemPedido itemPedido){
+        items.add(itemPedido);
+    }
+
+    public double getValorTotal() {
+        return items.stream().mapToDouble(ItemPedido::getValorTotal).sum();
+    }
+
     @Override
     public String toString() {
         return "Pedido{" +
-                "cliente=" + cliente +
-                ", items=" + items +
-                ", pagamentos=" + pagamentos +
+                "items=" + items +
                 ", id=" + id +
                 '}';
     }

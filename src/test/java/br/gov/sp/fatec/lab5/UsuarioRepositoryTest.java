@@ -14,14 +14,15 @@ public class UsuarioRepositoryTest {
     private UsuarioRepository repo;
 
     @Test
-    public void teste01(){
+    public void shouldCreateAnUser(){
         Usuario usuario = new Usuario();
-        usuario.setUsuario("Gabriel");
+        String nome = "gabrielpb88";
+        usuario.setUsuario(nome);
         usuario.setSenha("123");
 
         repo.save(usuario);
 
-        Usuario found = repo.findById("Gabriel").get();
-        Assertions.assertEquals("Gabriel", found.getUsuario());
+        Usuario found = repo.findById(nome).get();
+        Assertions.assertEquals(nome, found.getUsuario());
     }
 }

@@ -40,8 +40,10 @@ public class ItemPedido extends Identificador {
     @Override
     public String toString() {
         return "ItemPedido{" +
+                "pedido=" + pedido.getId() +
                 "quantidade=" + quantidade +
-                ", item=" + item +
+                "precoUnitario=" + precoUnitario +
+                ", item=" + item.getNome() +
                 '}';
     }
 }

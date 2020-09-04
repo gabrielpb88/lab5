@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "ped_pedido")
@@ -25,11 +23,11 @@ public class Pedido extends Identificador{
     @JoinColumn(name = "cli_id")
     private Cliente cliente;
 
-    @OneToMany
-    private List<ItemPedido> items = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
+    private Set<ItemPedido> items = new HashSet<>();
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
-    private List<Pagamento> pagamentos = new ArrayList<>();
+    private Set<Pagamento> pagamentos = new HashSet<>();
 
     @Column(name = "data_do_pedido")
     private Date dataDaCompra;

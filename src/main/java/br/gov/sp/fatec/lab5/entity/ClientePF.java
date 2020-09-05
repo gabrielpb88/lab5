@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -16,6 +17,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue(value = "pf")
 public class ClientePF extends Cliente {
 
+    @Column(name = "cpf", length = 14)
     private String cpf;
 
     @Override

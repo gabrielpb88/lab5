@@ -3,6 +3,7 @@ package br.gov.sp.fatec.lab5.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue(value = "pj")
 public class ClientePJ extends Cliente {
 
+    @Column(name = "cnpj", length = 18)
     private String cnpj;
 
     @Override

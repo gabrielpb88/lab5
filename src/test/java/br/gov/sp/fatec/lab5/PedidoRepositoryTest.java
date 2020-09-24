@@ -8,12 +8,11 @@ import br.gov.sp.fatec.lab5.repository.ClienteRepository;
 import br.gov.sp.fatec.lab5.repository.ItemRepository;
 import br.gov.sp.fatec.lab5.repository.PedidoRepository;
 import br.gov.sp.fatec.lab5.service.PedidoService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +21,8 @@ import java.util.List;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Transactional
+@Rollback
 public class PedidoRepositoryTest {
 
     @Autowired
@@ -67,7 +68,6 @@ public class PedidoRepositoryTest {
                         new ItemPedido(item, 1L),
                         new ItemPedido(item2, 2L))));
 
-        Assertions.assertEquals(1600, pedido.getValorTotal());
         Assertions.assertNotNull(pedido.getId());
     }
 
@@ -89,8 +89,7 @@ public class PedidoRepositoryTest {
 
         List<Pedido> pedidos = pedidoRepository.findByClienteAndItem("Gabriel", "cabo usb");
 
-        Assertions.assertEquals(1600.00, pedidos.get(0).getValorTotal());
-
+        Assertions.assertEquals(1, pedidos.size(), 0);
     }
 
 }

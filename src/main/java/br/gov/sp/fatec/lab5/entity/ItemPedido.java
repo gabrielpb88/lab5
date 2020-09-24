@@ -1,18 +1,24 @@
 package br.gov.sp.fatec.lab5.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "item_pedido")
-@Data @NoArgsConstructor
 public class ItemPedido extends Identificador {
+
+    public ItemPedido() {
+    }
 
     public ItemPedido(Item item, Long quantidade){
         setItem(item);
         setQuantidade(quantidade);
+    }
+
+    public ItemPedido(Long quantidade, Double precoUnitario, Item item, Pedido pedido) {
+        this.quantidade = quantidade;
+        this.precoUnitario = precoUnitario;
+        this.item = item;
+        this.pedido = pedido;
     }
 
     private Long quantidade;
@@ -35,6 +41,34 @@ public class ItemPedido extends Identificador {
 
     public Double getValorTotal(){
         return precoUnitario * quantidade;
+    }
+
+    public Long getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Long quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public Double getPrecoUnitario() {
+        return precoUnitario;
+    }
+
+    public void setPrecoUnitario(Double precoUnitario) {
+        this.precoUnitario = precoUnitario;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     @Override

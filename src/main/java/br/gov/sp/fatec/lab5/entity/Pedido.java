@@ -1,18 +1,24 @@
 package br.gov.sp.fatec.lab5.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ped_pedido")
-@Getter
-@Setter @NoArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "ped_id"))
 public class Pedido extends Identificador{
+
+    public Pedido() {
+    }
+
+    public Pedido(Cliente cliente, Set<ItemPedido> items, Set<Pagamento> pagamentos, Date dataDaCompra) {
+        this.cliente = cliente;
+        this.items = items;
+        this.pagamentos = pagamentos;
+        this.dataDaCompra = dataDaCompra;
+    }
 
     public Pedido(Cliente cliente, Date dataDaCompra){
         setCliente(cliente);
@@ -32,12 +38,40 @@ public class Pedido extends Identificador{
     @Column(name = "data_do_pedido")
     private Date dataDaCompra;
 
-    public void addItemPedido(ItemPedido itemPedido){
-        items.add(itemPedido);
-    }
-
     public double getValorTotal() {
         return items.stream().mapToDouble(ItemPedido::getValorTotal).sum();
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Set<ItemPedido> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<ItemPedido> items) {
+        this.items = items;
+    }
+
+    public Set<Pagamento> getPagamentos() {
+        return pagamentos;
+    }
+
+    public void setPagamentos(Set<Pagamento> pagamentos) {
+        this.pagamentos = pagamentos;
+    }
+
+    public Date getDataDaCompra() {
+        return dataDaCompra;
+    }
+
+    public void setDataDaCompra(Date dataDaCompra) {
+        this.dataDaCompra = dataDaCompra;
     }
 
     @Override

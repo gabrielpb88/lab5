@@ -1,5 +1,7 @@
 package br.gov.sp.fatec.lab5.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,13 +11,16 @@ import java.util.Set;
 public class Usuario {
 
     @Id
+    @JsonView({View.UsuarioSimples.class})
     private String usuario;
 
+    @JsonView(View.UsuarioCompleto.class)
     private String senha;
 
     public Usuario() {
     }
 
+    @JsonView(View.UsuarioCompleto.class)
     @ManyToMany
     @JoinTable(name = "usr_has_roles",
             joinColumns =

@@ -31,7 +31,7 @@ public class ClienteService {
         return repository.save(cliente);
     }
 
-    public Cliente buscarPorNome(String nome) {
-        return repository.findByNome(nome);
+    public Iterable<Cliente> buscarPorNome(String nome) {
+        return repository.findByNomeContaining(nome);
     }
 }

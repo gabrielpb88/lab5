@@ -1,5 +1,7 @@
 package br.gov.sp.fatec.lab5.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -8,6 +10,10 @@ import java.util.List;
 @Entity
 @DiscriminatorValue(value = "pf")
 public class ClientePF extends Cliente {
+
+    @JsonView({View.ClienteCompletoPF.class})
+    @Column(name = "cpf", length = 14)
+    private String cpf;
 
     public ClientePF() {
     }
@@ -28,9 +34,6 @@ public class ClientePF extends Cliente {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-
-    @Column(name = "cpf", length = 14)
-    private String cpf;
 
     @Override
     public String toString() {

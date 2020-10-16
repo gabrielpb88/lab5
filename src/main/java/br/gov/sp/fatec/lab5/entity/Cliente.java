@@ -1,5 +1,7 @@
 package br.gov.sp.fatec.lab5.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,10 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "cli_id"))
 public abstract class Cliente extends Identificador {
 
+    @JsonView({View.ClienteSimples.class})
     protected String nome;
+
+    @JsonView({View.ClienteSimples.class})
     protected String endereco;
 
     public Cliente() {
@@ -23,6 +28,7 @@ public abstract class Cliente extends Identificador {
         this.pedidos = pedidos;
     }
 
+    @JsonView({View.ClienteCompleto.class})
     @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
     protected List<Pedido> pedidos = new ArrayList<>();
 

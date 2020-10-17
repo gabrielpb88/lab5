@@ -1,7 +1,12 @@
 drop database if exists lab5;
 create database if not exists lab5;
+drop user 'lab5'@'localhost';
 
 use lab5;
+
+create user 'lab5'@'localhost' identified by 'lab5';
+
+grant select, insert, update, delete on lab5.* to 'lab5'@'localhost';
 
 CREATE TABLE cli_cliente(
 	cli_id BIGINT NOT NULL AUTO_INCREMENT,
@@ -74,21 +79,27 @@ CREATE TABLE pag_pagamento_dinheiro(
 );
 
 CREATE TABLE usr_usuario(
-    usuario VARCHAR(255) NOT NULL PRIMARY KEY,
+    usr_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE roles(
+    rol_id BIGINT NOT NULL,
     role_name VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_roles PRIMARY KEY(role_name)
+    CONSTRAINT pk_roles PRIMARY KEY(rol_id)
 );
 
 CREATE TABLE usr_has_roles(
-    role_name VARCHAR(255) NOT NULL,
-    usuario VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_usuario FOREIGN KEY (usuario) REFERENCES
-    usr_usuario(usuario),
-    CONSTRAINT fk_role FOREIGN KEY (role_name) REFERENCES
-    roles(role_name),
-    CONSTRAINT pk_roles PRIMARY KEY(role_name, usuario)
+    role_id BIGINT NOT NULL,
+    usuario_id BIGINT NOT NULL,
+    CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES
+    usr_usuario(usr_id),
+    CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES
+    roles(rol_id),
+    CONSTRAINT pk_roles PRIMARY KEY(role_id, usuario_id)
 );
+
+INSERT INTO usr_usuario (nome, senha) VALUES ('admin', '$2y$12$.RWfoFef/X0E3ebgeTSW5ObdF2RSqGRxGU73bRBFBKVJboSp4JYJa');
+INSERT INTO roles (role_name) values ('ROLE_ADMIN');
+INSERT INTO usr_has_roles VALUES (1, 1);

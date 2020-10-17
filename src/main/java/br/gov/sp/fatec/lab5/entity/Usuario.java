@@ -8,11 +8,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usr_usuario")
-public class Usuario {
+@AttributeOverride(name = "id", column = @Column(name = "usr_id"))
+public class Usuario extends Identificador {
 
-    @Id
     @JsonView({View.UsuarioSimples.class})
-    private String usuario;
+    @Column(name = "nome")
+    private String nome;
 
     @JsonView(View.UsuarioCompleto.class)
     private String senha;
@@ -21,30 +22,19 @@ public class Usuario {
     }
 
     @JsonView(View.UsuarioCompleto.class)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usr_has_roles",
             joinColumns =
-                {@JoinColumn(name = "usuario", referencedColumnName = "usuario")},
-            inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "role_name")})
+                {@JoinColumn(name = "usuario_id", referencedColumnName = "usr_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "rol_id")})
     private Set<Role> roles = new HashSet<>();
 
-    public boolean hasHole(String string){
-        Object[] array = roles.toArray();
-        for(Object role : array){
-            Role temp = (Role) role;
-            if (temp.getRole().equals(string)){
-                return true;
-            }
-        }
-        return false;
+    public String getNome() {
+        return nome;
     }
 
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getSenha() {

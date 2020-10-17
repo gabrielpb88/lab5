@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     @Autowired
@@ -24,9 +24,9 @@ public class UsuarioController {
     }
 
     @JsonView(View.UsuarioCompleto.class)
-    @GetMapping("/{nome}")
-    public ResponseEntity<Usuario> buscarPorNome(@PathVariable String nome) {
-        Usuario usuario = service.buscarPorNome(nome);
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+        Usuario usuario = service.findById(id);
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }
@@ -37,7 +37,7 @@ public class UsuarioController {
     public ResponseEntity salvar(@RequestBody Usuario usuario, UriComponentsBuilder uriComponentsBuilder) {
         service.save(usuario);
         return ResponseEntity.created(uriComponentsBuilder.path(
-                "/usuarios/" + usuario.getUsuario()).build().toUri()).build();
+                "/usuario/" + usuario.getId()).build().toUri()).build();
     }
 
     @PutMapping
@@ -46,13 +46,13 @@ public class UsuarioController {
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping("/{nome}")
-    public ResponseEntity deletar(@PathVariable String nome) {
-        Usuario usuario = service.buscarPorNome(nome);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletar(@PathVariable Long id) {
+        Usuario usuario = service.findById(id);
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }
-        service.delete(nome);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

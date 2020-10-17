@@ -2,6 +2,7 @@ package br.gov.sp.fatec.lab5.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -26,11 +27,20 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity accessDeniedException(AccessDeniedException e){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", e.getMessage());
+
+        return ResponseEntity.status(401).body(body);
+    }
+
+    @ExceptionHandler
     public ResponseEntity generic(Exception e){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Ocorreu um erro");
+        body.put("message", e.getMessage());
 
-        return ResponseEntity.status(500).body(body);
+        return ResponseEntity.status(400).body(body);
     }
 }

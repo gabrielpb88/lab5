@@ -4,20 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+@AttributeOverride(name = "id", column = @Column(name = "rol_id"))
+public class Role extends Identificador {
 
-    @Id
     @Column(name = "role_name")
     @JsonView(View.UsuarioCompleto.class)
     private String role;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Usuario> usuarios;
+    private Set<Usuario> usuarios = new HashSet<>();
 
     public Role() {
     }
@@ -28,6 +29,14 @@ public class Role {
 
     public String getRole() {
         return role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setRole(String role) {

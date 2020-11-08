@@ -81,6 +81,7 @@ CREATE TABLE pag_pagamento_dinheiro(
 CREATE TABLE usr_usuario(
     usr_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL
 );
 
@@ -100,6 +101,6 @@ CREATE TABLE usr_has_roles(
     CONSTRAINT pk_roles PRIMARY KEY(role_id, usuario_id)
 );
 
-INSERT INTO usr_usuario (nome, senha) VALUES ('admin', '$2y$12$.RWfoFef/X0E3ebgeTSW5ObdF2RSqGRxGU73bRBFBKVJboSp4JYJa');
+INSERT INTO usr_usuario (nome, email, senha) VALUES ('admin', 'admin@email.com', '$2y$12$.RWfoFef/X0E3ebgeTSW5ObdF2RSqGRxGU73bRBFBKVJboSp4JYJa');
 INSERT INTO roles (role_name) values ('ROLE_ADMIN');
 INSERT INTO usr_has_roles VALUES (1, 1);

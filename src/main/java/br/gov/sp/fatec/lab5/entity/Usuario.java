@@ -15,7 +15,11 @@ public class Usuario extends Identificador {
     @Column(name = "nome")
     private String nome;
 
-    @JsonView(View.UsuarioCompleto.class)
+    @JsonView({View.UsuarioSimples.class})
+    @Column(name = "email")
+    private String email;
+
+//    @JsonView(View.UsuarioCompleto.class)
     private String senha;
 
     public Usuario() {
@@ -35,6 +39,14 @@ public class Usuario extends Identificador {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {

@@ -6,20 +6,15 @@ import br.gov.sp.fatec.lab5.repository.RoleRepository;
 import br.gov.sp.fatec.lab5.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Service("usuarioService")
-public class UsuarioService implements UserDetailsService {
+@Service
+public class UsuarioService {
 
     @Autowired
     private UsuarioRepository repository;
@@ -35,7 +30,7 @@ public class UsuarioService implements UserDetailsService {
         return repository.findAll();
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Usuario findById(Long id) {
         return repository.findById(id).orElse(null);
     }
@@ -57,20 +52,6 @@ public class UsuarioService implements UserDetailsService {
 
     public void delete(Long id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String nome) throws UsernameNotFoundException {
-        Usuario usuario = repository.findByNome(nome);
-        if( usuario == null) {
-            throw new UsernameNotFoundException("Usuário " + nome + " não encontrado.");
-        }
-        return User.builder().username(usuario.getNome())
-                .password(usuario.getSenha())
-                .authorities(usuario.getRoles().stream()
-                        .map(Role::getRole).collect(Collectors.toList())
-                        .toArray(new String[usuario.getRoles().size()]))
-                .build();
     }
 
 }

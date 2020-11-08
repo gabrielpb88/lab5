@@ -2,6 +2,7 @@ package br.gov.sp.fatec.lab5.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -50,4 +51,5 @@ public class Role extends Identificador {
     public void setUsuarios(Set<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
+
 }

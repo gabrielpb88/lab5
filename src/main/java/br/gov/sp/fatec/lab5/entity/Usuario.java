@@ -19,7 +19,6 @@ public class Usuario extends Identificador {
     @Column(name = "email")
     private String email;
 
-//    @JsonView(View.UsuarioCompleto.class)
     private String senha;
 
     public Usuario() {

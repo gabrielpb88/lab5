@@ -9,6 +9,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity methodArgumentTypeMismatchException(
-            MethodArgumentTypeMismatchException exception){
+            MethodArgumentTypeMismatchException exception) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -27,16 +28,18 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity accessDeniedException(AccessDeniedException e){
+    public ResponseEntity accessDeniedException(AccessDeniedException e) {
+        long date = new Date().getTime();
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        body.put("timestamp", date);
+        body.put("status", 403);
         body.put("message", e.getMessage());
 
-        return ResponseEntity.status(401).body(body);
+        return ResponseEntity.status(403).body(body);
     }
 
     @ExceptionHandler
-    public ResponseEntity generic(Exception e){
+    public ResponseEntity generic(Exception e) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", e.getMessage());

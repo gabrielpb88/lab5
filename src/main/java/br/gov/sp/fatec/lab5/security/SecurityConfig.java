@@ -19,24 +19,28 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+import static br.gov.sp.fatec.lab5.controller.utils.URLs.*;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Qualifier("userDetailService")
+    @Qualifier("segurancaService")
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
     private JWTUtil JWTUtil;
 
-    private static String[] PUBLIC_MATCHERS_POST = { "/usuario"};
+    private static String[] PUBLIC_MATCHERS_GET = {ITEM};
+    private static String[] PUBLIC_MATCHERS_POST = {USUARIO, CLIENTE_PF, CLIENTE_PJ};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
 
         http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .anyRequest().authenticated();
 

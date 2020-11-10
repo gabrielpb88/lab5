@@ -1,5 +1,7 @@
 package br.gov.sp.fatec.lab5.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +9,9 @@ import javax.persistence.*;
 @AttributeOverride(name = "id", column = @Column(name = "ite_id"))
 public class Item extends Identificador {
 
+    @JsonView(View.UsuarioSimples.class)
     private String nome;
+    @JsonView(View.UsuarioSimples.class)
     private Double preco;
 
     public Item() {
@@ -21,6 +25,7 @@ public class Item extends Identificador {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "for_id")
+    @JsonView(View.UsuarioSimples.class)
     private Fornecedor fornecedor;
 
     public String getNome() {

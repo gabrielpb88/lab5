@@ -4,6 +4,8 @@ public class View {
 
     public static class UsuarioSimples{}
 
+    public static class UsuarioComercial extends UsuarioSimples {}
+
     public static class UsuarioCompleto extends UsuarioSimples {}
 
     public static class ClienteSimples{}

@@ -1,6 +1,5 @@
 package br.gov.sp.fatec.lab5.security;
 
-import br.gov.sp.fatec.lab5.service.UserDetailService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,7 +44,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		if (jwtUtil.tokenValido(token)) {
 			String username = jwtUtil.getUsername(token);
 			UserDetails user = userDetailsService.loadUserByUsername(username);
-			return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+			return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
 		}
 		return null;
 	}

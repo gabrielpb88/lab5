@@ -39,7 +39,12 @@ public class UsuarioService {
     public void save(Usuario usuario){
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         Set<Role> roles = usuario.getRoles().stream()
-                .map(role -> roleRepository.findById(role.getId()).get())
+                .map(role -> {
+                    Role r = roleRepository.findById(role.getId()).get();
+                    r.getUsuarios().add(usuario);
+                    roleRepository.save(r);
+                    return r;
+                })
                 .collect(Collectors.toSet());
         usuario.setRoles(roles);
         repository.save(usuario);

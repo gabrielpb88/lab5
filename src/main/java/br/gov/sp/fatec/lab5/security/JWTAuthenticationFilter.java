@@ -1,12 +1,13 @@
 package br.gov.sp.fatec.lab5.security;
 
-import br.gov.sp.fatec.lab5.dto.CredentialsDTO;
+import br.gov.sp.fatec.lab5.entity.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -34,13 +35,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throws AuthenticationException {
 
         try {
-            CredentialsDTO creds = new ObjectMapper()
-                    .readValue(request.getInputStream(), CredentialsDTO.class);
+            Usuario usuario = new ObjectMapper()
+                    .readValue(request.getInputStream(), Usuario.class);
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
-                            creds.getEmail(),
-                            creds.getSenha(),
+                            usuario.getEmail(),
+                            usuario.getSenha(),
                             new ArrayList<>());
 
             Authentication auth = authenticationManager.authenticate(authToken);
@@ -58,10 +59,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain chain,
             Authentication authResult) {
 
-        String username = ((UserSpringSecurity) authResult.getPrincipal()).getUsername();
+        String username = ((User) authResult.getPrincipal()).getUsername();
         String token = JWTUtil.generateToken(username);
-        response.addHeader("Authorization", "Bearer " + token);
-        response.addHeader("access-control-expose-headers", "Authorization");
+        response.addHeader("Token", "Bearer " + token);
+        response.addHeader("access-control-expose-headers", "Token");
     }
 
     private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {

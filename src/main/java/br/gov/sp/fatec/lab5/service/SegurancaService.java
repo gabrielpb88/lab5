@@ -2,25 +2,30 @@ package br.gov.sp.fatec.lab5.service;
 
 import br.gov.sp.fatec.lab5.entity.Usuario;
 import br.gov.sp.fatec.lab5.repository.UsuarioRepository;
-import br.gov.sp.fatec.lab5.security.UserSpringSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
-public class UserDetailService implements UserDetailsService {
+public class SegurancaService implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email);
-        if( usuario == null ){
+        Usuario usuario = repository.findByEmail(email);
+        if (usuario == null){
             throw new UsernameNotFoundException("Usuário " + email + " não encontrado.");
         }
-        return new UserSpringSecurity(usuario.getEmail(), usuario.getSenha(), usuario.getRoles());
+        return new User(
+                usuario.getEmail(), usuario.getSenha(),
+                usuario.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList()));
     }
 }

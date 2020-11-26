@@ -39,7 +39,7 @@ public class ItemController {
     public ResponseEntity<Void> salvar(@RequestBody Item item, UriComponentsBuilder uriComponentsBuilder) {
         service.save(item);
         return ResponseEntity.created(uriComponentsBuilder.path(
-                ITEM + item.getId()).build().toUri()).build();
+                ITEM + "/" + item.getId()).build().toUri()).build();
     }
 
     @PutMapping

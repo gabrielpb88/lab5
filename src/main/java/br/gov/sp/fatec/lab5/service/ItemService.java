@@ -25,6 +25,7 @@ public class ItemService {
         return repository.findAll();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USUARIO_COMUM')")
     public Item findById(Long id) {
         return repository.findById(id).orElse(null);
     }
